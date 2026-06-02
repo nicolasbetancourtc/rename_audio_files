@@ -22,4 +22,5 @@ Notes:
 
 - If your audio files are organized inside subfolders (e.g., one folder per device), use default `--recursive` value (True) otherwise use False.
 - The script only targets files with the `.wav` extension (case-insensitive).
+- This code does not add double prefixes on files already having them
 
