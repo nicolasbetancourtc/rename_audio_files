@@ -25,7 +25,7 @@ def find_wav_files(folder_path, recursive=False):
 
 
 #%%
-def add_file_prefix(folder_name: str, recursive:bool=False, verbose:bool=False) -> None:
+def add_file_prefix(folder_name: str, recursive:bool=True, verbose:bool=True) -> None:
     """
     Adds a prefix to the file names in the given directory.
     The prefix is the name of the immediate parent folder of the files.
@@ -33,7 +33,7 @@ def add_file_prefix(folder_name: str, recursive:bool=False, verbose:bool=False) 
     Parameters:
     folder_name(str): Name of directory which contains files.
     recursive(bool): If True, searches for files in sub-directories recursively.
-                     Defaults to False if not provided.
+                     Defaults to True if not provided.
 
     Returns: None
     """
@@ -72,6 +72,37 @@ def add_file_prefix(folder_name: str, recursive:bool=False, verbose:bool=False) 
         
     return flist_changed
 
-folder_path="""C:\\Users\\nicolas.betancourt\\Documents\\Yaguara\\Grabadoras"""
-recursive=True
-add_file_prefix(folder_path, recursive=recursive, verbose=True)
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Add parent folder name as prefix to WAV files."
+    )
+    parser.add_argument(
+        "--audio_root_directory",
+        "-d",
+        required=True,
+        help="Path to the audio root directory.",
+    )
+    parser.add_argument(
+        "--recursive",
+        "-r",
+        action="store_true",
+        default=True,
+        help="Search recursively in subdirectories. (default: True)",
+    )
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        default=True,
+        help="Enable verbose output. (default: True)",
+    )
+
+    args = parser.parse_args()
+    changed = add_file_prefix(args.audio_root_directory, recursive=args.recursive, verbose=args.verbose)
+    if changed is None:
+        changed = []
+    print(f"Renamed {len(changed)} files in '{args.audio_root_directory}'.")
+
